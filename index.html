@@ -1,38 +1,76 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Контент-система</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Интерактив — первый экран</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-<main class="hero">
-  <div class="hero__content">
-
-    <div class="hero__badge">AI · CONTENT SYSTEM</div>
-
-    <h1>
-      У вас уже есть идеи.
-      <span>Но они не дают результата.</span>
-    </h1>
-
-    <p class="hero__subtitle">
-      Проблема не в креативе.  
-      Каждый раз вы начинаете с нуля и теряете то, что уже работало.  
-      Этот интерактив соберёт структуру и покажет, где именно вы теряете результат.
-    </p>
-
-    <div class="hero__actions">
-      <a class="hero__button" href="quiz.html">
-        Собрать стратегию →
-      </a>
-      <p class="hero__note">5 шагов → понятная система контента</p>
+  <main class="hero">
+    <div class="hero__bg">
+      <div class="glow glow--violet"></div>
+      <div class="glow glow--blue"></div>
+      <div class="glow glow--gold"></div>
+      <div class="grid-pattern"></div>
+      <div class="noise"></div>
     </div>
 
-  </div>
-</main>
+    <section class="hero__content">
+      <div class="hero__badge">AI · CONTENT SYSTEM</div>
 
+      <div class="hero__layout">
+        <div class="hero__text">
+          <h1>
+            У вас уже есть идеи.
+            <span>Но они не работают.</span>
+          </h1>
+
+          <p class="hero__subtitle">
+            Потому что нет структуры, которая превращает их в результат.
+            Этот интерактив соберёт вам контент-систему за 1 минуту
+            и покажет, где вы обычно всё ломаете.
+          </p>
+
+          <div class="hero__actions">
+            <a class="hero__button" href="#quiz">
+              <span>Собрать стратегию</span>
+              <span class="button-arrow">→</span>
+            </a>
+            <p class="hero__note">4 шага → готовая структура контента</p>
+          </div>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="orbit orbit--one"></div>
+          <div class="orbit orbit--two"></div>
+          <div class="orbit orbit--three"></div>
+
+          <div class="system-core">
+            <div class="core-light"></div>
+            <div class="core-text">
+              <span>CONTENT</span>
+              <strong>SYSTEM</strong>
+            </div>
+          </div>
+
+          <div class="float-card float-card--one">
+            <span>01</span>
+            Каждый пост придумывается с нуля
+          </div>
+
+          <div class="float-card float-card--two">
+            <span>02</span>
+            Идеи есть, но нет системы
+          </div>
+
+          <div class="float-card float-card--three">
+            <span>03</span>
+            Контент есть — результата нет
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
