@@ -1,102 +1,179 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Контент-система</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle at 30% 30%, #1a0f2e, #03040a);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контент-система</title>
 
-    .container {
-      max-width: 800px;
-      text-align: center;
-    }
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#03040a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
+.container {
+  text-align:center;
+  max-width:600px;
+  width:100%;
+}
 
-    .options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 30px;
-    }
+.progress {
+  height:6px;
+  background:#222;
+  border-radius:10px;
+  margin-bottom:30px;
+}
 
-    .card {
-      padding: 20px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.bar {
+  height:100%;
+  width:25%;
+  background:linear-gradient(90deg,#a855f7,#ec4899);
+  border-radius:10px;
+  transition:0.3s;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: #a855f7;
-      box-shadow: 0 0 20px rgba(168,85,247,0.3);
-    }
+h1 {
+  margin-bottom:30px;
+}
 
-    .next {
-      margin-top: 40px;
-      padding: 14px 28px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #a855f7, #ec4899);
-      border: none;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      opacity: 0.5;
-    }
+.options {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
 
-    .next.active {
-      opacity: 1;
-    }
-  </style>
+.card {
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #333;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.card.active {
+  border-color:#a855f7;
+  box-shadow:0 0 10px #a855f7;
+}
+
+.next {
+  margin-top:30px;
+  padding:12px 20px;
+  border:none;
+  border-radius:999px;
+  background:#a855f7;
+  color:white;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>Что сейчас важнее всего?</h1>
 
-  <div class="options">
-    <div class="card" onclick="select(this)">Увеличить продажи</div>
-    <div class="card" onclick="select(this)">Привлечь аудиторию</div>
-    <div class="card" onclick="select(this)">Выстроить экспертность</div>
-    <div class="card" onclick="select(this)">Понять, о чем писать</div>
-  </div>
+<div class="progress">
+  <div class="bar" id="bar"></div>
+</div>
 
-  <button id="nextBtn" class="next" onclick="nextStep()">Далее</button>
+<h1 id="question"></h1>
+
+<div class="options" id="options"></div>
+
+<button class="next" onclick="next()">Далее</button>
+
 </div>
 
 <script>
-  let selected = null;
 
-  function select(el) {
-    document.querySelectorAll('.card').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.1)');
-    el.style.borderColor = '#a855f7';
-    selected = el.innerText;
-    document.getElementById('nextBtn').classList.add('active');
+let step = 0;
+let answers = [];
+
+const steps = [
+  {
+    q: "Что сейчас важнее всего?",
+    options: ["Продажи","Аудитория","Экспертность","Темы"]
+  },
+  {
+    q: "Какой формат ближе?",
+    options: ["Видео","Текст","Сторис","Карточки"]
+  },
+  {
+    q: "Где публикуешь?",
+    options: ["Instagram","Telegram","YouTube","VK"]
+  },
+  {
+    q: "Что мешает?",
+    options: ["Нет идей","Нет времени","Нет структуры","Нет результата"]
   }
+];
 
-  function nextStep() {
-    if (!selected) return;
+function render() {
+  document.getElementById("question").innerText = steps[step].q;
 
-    alert("Вы выбрали: " + selected + "\\n\\nДальше можно развить полноценный квиз 👀");
+  const container = document.getElementById("options");
+  container.innerHTML = "";
+
+  steps[step].options.forEach(opt => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerText = opt;
+
+    div.onclick = () => {
+      document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+      div.classList.add("active");
+      answers[step] = opt;
+    };
+
+    container.appendChild(div);
+  });
+
+  document.getElementById("bar").style.width = ((step+1)/steps.length*100)+"%";
+}
+
+function next() {
+  if (!answers[step]) return;
+
+  step++;
+
+  if (step >= steps.length) {
+    showResult();
+  } else {
+    render();
   }
+}
+
+function showResult() {
+  document.body.innerHTML = `
+  <div style="text-align:center; padding:40px;">
+    <h1>Основа стратегии готова</h1>
+
+    <p style="margin-top:20px; opacity:0.7;">
+      Но 90% делают это — и не получают результат
+    </p>
+
+    <p style="margin-top:20px;">
+      Потому что ломают подачу и первый экран
+    </p>
+
+    <button style="margin-top:30px; padding:12px 20px; border:none; border-radius:999px; background:#a855f7; color:white;">
+      Получить идеи
+    </button>
+
+    <button style="margin-top:10px; padding:12px 20px; border:none; border-radius:999px; background:#ec4899; color:white;">
+      Разбор
+    </button>
+  </div>
+  `;
+}
+
+render();
+
 </script>
 
 </body>
